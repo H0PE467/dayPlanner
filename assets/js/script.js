@@ -1,6 +1,5 @@
 var timeBlocks = $(".timeblocks");
 
-var toDos = []
 
 //Will create and append a new time block, it requires and hour in 24 hours format and a text if locally storaged
 function createNewTimeBlock(hour24,text) {
@@ -46,7 +45,7 @@ function createNewTimeBlock(hour24,text) {
 }
 
 function setTimeBlocks() {
-    for (i = Number(moment().format("k"))-3; i < Number(moment().format("k"))+6; i++) {
+    for (i = 9; i < 18; i++) {
 
         var SavedText = false;
         var savedWhere = 0;
@@ -69,21 +68,35 @@ function setTimeBlocks() {
 function saveInfo(event) {
     var block = event.target;
     if (block.matches(".saveBtn") || block.matches("i")) {
-        var toDo = block.parentElement.children[1].value;
-        var todDoTime = h12textTOh24number(block.parentElement.children[0].children[0].textContent);
-
-        console.log(todDoTime);
-
-        var tempObj = {
-            text : toDo,
-            time : todDoTime
+        if (block.matches(".saveBtn")) {
+            var toDo = block.parentElement.children[1].value;
+            var todDoTime = h12textTOh24number(block.parentElement.children[0].children[0].textContent);
+        }else if(block.matches("i")){
+            var toDo = block.parentElement.parentElement.children[1].value;
+            var todDoTime = h12textTOh24number(block.parentElement.parentElement.children[0].children[0].textContent);
         }
 
-        console.log(tempObj);
+        var repeat = false;
+        var whereRepeat = 0;
 
-        toDos.push(tempObj);
+        for (i = 0; i < toDos.length; i++) {
+            if (toDos[i].time == todDoTime) {
+                repeat = true
+                whereRepeat = i;
+            }
+        }
+
+        if (repeat) {
+            toDos[whereRepeat].text = toDo;
+        }else{
+            var tempObj = {
+                text : toDo,
+                time : todDoTime
+            }
+            toDos.push(tempObj);
+        }
+
         localStorage.setItem("tareas",JSON.stringify(toDos))
-        console.log(localStorage.getItem("tareas"));
     }
 }
 
@@ -96,13 +109,16 @@ function h12textTOh24number(h12) {
     return Number(newHour[0]);
 }
 
-timeBlocks.on("click",saveInfo)
+var toDos = []
+
 
 if (localStorage.getItem("tareas") != null) {
     var tareas = JSON.parse(localStorage.getItem("tareas"));
-    console.log(tareas);
+    toDos = JSON.parse(localStorage.getItem("tareas"));
 }else{
     var tareas = [{time:25,text:""}]
 }
 
 setTimeBlocks()
+
+timeBlocks.on("click",saveInfo)
