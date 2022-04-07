@@ -1,4 +1,5 @@
 var timeBlocks = $(".timeblocks");
+var currentday = $("#currentDay")
 
 
 //Will create and append a new time block, it requires and hour in 24 hours format and a text if locally storaged
@@ -122,3 +123,5 @@ if (localStorage.getItem("tareas") != null) {
 setTimeBlocks()
 
 timeBlocks.on("click",saveInfo)
+
+currentday.text(moment().format("dddd, MMMM Do"))
