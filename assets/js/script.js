@@ -2,7 +2,7 @@ var timeBlocks = $(".timeblocks");
 var currentday = $("#currentDay")
 
 
-//Will create and append a new time block, it requires and hour in 24 hours format and a text if locally storaged
+// Will create and append a new time block, it requires and hour in 24 hours format and a text if locally storaged
 function createNewTimeBlock(hour24,text) {
     var newHourBlock = $("<div>");
     newHourBlock.addClass("row hour-block");
@@ -45,6 +45,7 @@ function createNewTimeBlock(hour24,text) {
     timeBlocks.append(newHourBlock);
 }
 
+// Displays timeblocks from x hour to y hour 
 function setTimeBlocks() {
     for (i = 9; i < 18; i++) {
 
@@ -66,6 +67,7 @@ function setTimeBlocks() {
     }
 }
 
+// Saves info from an event target
 function saveInfo(event) {
     var block = event.target;
     if (block.matches(".saveBtn") || block.matches("i")) {
@@ -101,6 +103,7 @@ function saveInfo(event) {
     }
 }
 
+// convert and x number from 12 hour format to 24 hour format. Ex: 5PM -> 17hrs
 function h12textTOh24number(h12) {
     var newHour = h12.split(" ");
     if(newHour[1].toLowerCase() == "pm"){
